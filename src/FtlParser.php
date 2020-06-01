@@ -43,8 +43,12 @@ class FtlParser extends FtlAbstract
      */
     protected $_tree;
 
-    # @var string - objeto que realiza uma chamada ao metodo compile(...)
-    protected static $tag_caller = null;
+    /**
+     * TagManager que realizara uma chamada ao metodo compile
+     * 
+     * @var string
+     */
+    protected static $_tagCaller = null;
 
     /**
      * Construct
@@ -94,7 +98,6 @@ class FtlParser extends FtlAbstract
     {
         $this->setTagPrefix($options['tag_prefix'])
              ->setClassPath($options['class_path']);
-
         return $this;
     }
 
@@ -227,7 +230,7 @@ class FtlParser extends FtlAbstract
         );
 
         foreach ($matches as $match) {
-                $arguments[$match[1]] = $match[3];
+            $arguments[$match[1]] = $match[3];
         }
 
         return $arguments;
@@ -296,21 +299,15 @@ class FtlParser extends FtlAbstract
     public function renderTag($tag, $args, $content)
     {
         $bind = array('args' => $args, 'content' => $content);
-
         list($classename, $method) = $this->_getClassAndMethodFromTag($tag);
 
-        # checa se classe existe e carrega ...
         parent::_loadClass($classename);
-
-        # instanciando objeto...
         $object = $classename::getInstance();
 
-        # checa se objeto existe...
         if (!is_object($object)) {
             throw new Exception("Erro ao contruir objeto a partir da classe '{$classename}'");
         }
 
-        # checa se metodo existe...
         if (!method_exists($object, $method)) {
             # tenta chamar um metodo candidato que possa lidar com o metodo em falta ...
             if(method_exists($object, 'data_missing')) {
@@ -321,7 +318,6 @@ class FtlParser extends FtlAbstract
             }
         }
 
-        # realizando chamada ao objeto/metodo e passando os parametros...
         return call_user_func(array($object, $method), $bind);
     }
 
@@ -340,22 +336,27 @@ class FtlParser extends FtlAbstract
             return array(ucfirst($classename), "tag_{$method}");
         }
         
-        $classname = (null !== self::$tag_caller) ? ucfirst(self::$tag_caller) : ucfirst($tag);
+        $classname = (null !== self::$_tagCaller) ? ucfirst(self::$_tagCaller) : ucfirst($tag);
         $method = "tag_{$tag}";
         
         return array($classname, $method);
     }
     
     /**
-     * Informa quem e' o Tag Manager que esta realizando a chamada ao Parser
+     * As Classes TagManagers, normalmente chamam esse metodo para informar
+     * que sao elas as responsaveis atuais para processar certo trechos de 
+     * templates.
      **/
     public function setCaller($caller)
     {
-        self::$tag_caller = $caller;
+        self::$_tagCaller = $caller;
     }
 
+    /**
+     * Libera a propriedade Caller
+     */
     public function resetCaller()
     {
-        self::$tag_caller = null;
+        self::$_tagCaller = null;
     }
 }

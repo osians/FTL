@@ -31,10 +31,10 @@ class Page
     public function tag_page($bind)
     {
         # convertendo array para objeto
-        $args = oo($bind['args']);
+        $args = (object)$bind['args'];
 
         if(isset($args->get)) {
-            return $this->tag_get( $bind );
+            return $this->tag_get($bind);
         }
     }
 
@@ -64,7 +64,7 @@ class Page
 
     public function tag_get($_bind_ = array())
     {
-    	$args = oo($_bind_['args']);
+    	$args = (object)$_bind_['args'];
     	return (isset($this->info[$args->get])) ? $this->info[$args->get] : '';
     }
 

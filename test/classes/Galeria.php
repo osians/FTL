@@ -77,13 +77,12 @@ class Galeria
             return '';
         }
 
-        $args = oo($args);
-        $retorno = "<{$args->tag}";
+        $obj = (object)$args;
+        $retorno = "<{$obj->tag}";
 
         foreach($this->html_tag_attributes as $attr) {
-            $retorno .= isset($args->{$attr})
-                      ? " $attr='" . $args->{$attr} . "'"
-                      : "";
+            $retorno .= isset($obj->{$attr})
+                ? " $attr='" . $obj->{$attr} . "'" : "";
         }
 
         return "{$retorno}>";

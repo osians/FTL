@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="<sys:page get='charset' />">
+        <meta charset="{sys:page get='charset' /}">
         
     	<!-- Seta a largura do viewport para aparelhos mobile -->
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
-        <meta name="description" content="<sys:page get='meta_description' />" />
-        <meta name="keywords" content="<sys:page get='meta_keywords' />" />
-        <meta name="language" content="<sys:page get='current_lang' />" />
+        <meta name="description" content="{sys:page get='meta_description' /}" />
+        <meta name="keywords" content="{sys:page get='meta_keywords' /}" />
+        <meta name="language" content="{sys:page get='current_lang' /}" />
     
         <title><sys:page get="page_title" /> | <sys:page get="site_title" /></title>
     
-        <link rel="stylesheet" href="<sys:page get='theme_url' />assets/css/style.css">
+        <link rel="stylesheet" href="{sys:page get='theme_url' /}assets/css/style.css">
         <style>
             div.galeria{}
             div.galeria div{width:200px;float: left;margin-right: 4px;}
@@ -23,16 +23,16 @@
     <body>
     
         <h1>
-            <a href="<sys:page get='site_url' />"><sys:page get="page_title" /></a>
+            <a href="{sys:page get='site_url' /}">{sys:page get="page_title" /}</a>
         </h1>
 
-        <sys:galeria tag="div" class="galeria" id="galeria" accesskey="h">
+        {sys:galeria tag="div" class="galeria" id="galeria" accesskey="h"}
             <div>
-                <a href="<sys:url />" title="<sys:title />"> 
-                    <img src="<sys:src />" alt="<sys:alt />" /> 
+                <a href="{sys:url /}" title="{sys:title /}"> 
+                    <img src="{sys:src /}" alt="{sys:alt /}" /> 
                 </a>
            </div>
-        </sys:galeria>
+        {/sys:galeria}
         
     </body>
 

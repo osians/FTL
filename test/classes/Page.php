@@ -1,8 +1,8 @@
 <?php
 
-// @todo - precisa implementar TagInterface
+require_once __DIR__ . '/../../src/TagManager.php';
 
-class Page
+class Page extends TagManager
 {
     private $info = array(
         'meta_description' => "Meta description",
@@ -14,18 +14,6 @@ class Page
         'site_title' => "Nome do Meu Site",
         'charset' => "UTF-8",
     );
-
-    private static $instance;
-
-    public function __construct(){}
-
-    public static function getInstance()
-    {
-        if(null === static::$instance) {
-            static::$instance = new static();
-        }
-        return static::$instance;
-    }
 
     # metodo padrao, chamado sempre que nao e' especificado um metodo
     public function tag_page($bind)

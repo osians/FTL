@@ -1,9 +1,11 @@
 <?php
 
-class Galeria
+require_once __DIR__ . '/../../src/TagManager.php';
+
+class Galeria extends TagManager
 {
     # @reference - http://www.w3schools.com/tags/ref_standardattributes.asp
-    protected $html_tag_attributes = array(
+    protected $html_tag_attributes = array (
         'accesskey',
         'id',
         'class',
@@ -16,8 +18,7 @@ class Galeria
         'tabindex',
     );
 
-    protected $fotos = array
-    (
+    protected $fotos = array (
         array( 'src' => 'templates/fotos/foto01.jpg', 'alt' => 'texto alternativo 01', 'title' => 'Título da Imagem 01' ),
         array( 'src' => 'templates/fotos/foto02.jpg', 'alt' => 'texto alternativo 02', 'title' => 'Título da Imagem 02' ),
         array( 'src' => 'templates/fotos/foto03.jpg', 'alt' => 'texto alternativo 03', 'title' => 'Título da Imagem 03' ),
@@ -36,20 +37,6 @@ class Galeria
         array( 'src' => 'templates/fotos/foto16.jpg', 'alt' => 'texto alternativo 16', 'title' => 'Título da Imagem 16' ),
     );
 
-    private static $instancia ;
-    
-    public function __construct()
-    {
-    }
-    
-    public static function getInstance()
-    {
-        if (null === static::$instancia) {
-            static::$instancia = new static();
-        }
-        return static::$instancia;
-    }
-
     /* metodo default */
     public function tag_galeria($bind = array())
     {
@@ -59,19 +46,19 @@ class Galeria
 
         $this->curr_item_nav = 0;
 
-        $retorno .= $this->openHtmlTag($bind['args']);
+        $retorno .= $this->_openHtmlTag($bind['args']);
 
         foreach ($this->fotos as $foto) {
             $retorno .= $parser->compile($bind['content']);
             $this->curr_item_nav++;
         }
 
-        $retorno .= $this->closeHtmlTag($bind['args']);
+        $retorno .= $this->_closeHtmlTag($bind['args']);
         return $retorno;
     }
 
 
-    protected function openHtmlTag($args)
+    protected function _openHtmlTag($args)
     {
         if (!isset($args['tag'])) {
             return '';
@@ -88,7 +75,7 @@ class Galeria
         return "{$retorno}>";
     }
 
-    protected function closeHtmlTag($args)
+    protected function _closeHtmlTag($args)
     {
         return isset($args['tag']) ? "</{$args['tag']}>" : '';
     }

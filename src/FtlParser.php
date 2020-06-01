@@ -18,10 +18,6 @@ require_once 'FtlAbstract.php';
 
 class FtlParser extends FtlAbstract
 {
-    # @var int - indica a dupla de caracter que inicia e termina uma tag... exemplo <, {, [
-    # @todo - a ser implementado
-    protected $char_entite = 0;  # valores aceitos 0 = </> , 1 = {/}, 2 = [/]
-
     /**
      * Implementacao single ton
      *
@@ -150,8 +146,11 @@ class FtlParser extends FtlAbstract
         $matches = null;
         
         // pegue tudo que iniciar com <tag: e que finalizar com />
-        $pattern = '%([\w\W]*?)<(/)?' . $this->getTagPrefix() . ':([\w-:]+)([^>]*?)(/)?>([\w\W]*)%';
-        
+        $pattern = '%([\w\W]*?)' 
+                 . $this->getOpenSymbol() 
+                 . '(/)?' . $this->getTagPrefix() . ':([\w-:]+)([^>]*?)(/)?' 
+                 . $this->getCloseSymbol() . '([\w\W]*)%';
+
         while (preg_match($pattern, $template, $matches))
         {
             // redefinindo para nao pegar dados obsoletos
@@ -206,7 +205,7 @@ class FtlParser extends FtlAbstract
                 throw new Exception("Final da Tag '{$tag}' nao foi encontrada", 1);
             }
         }
-        
+
         $this->_tree[] = $template;
     }
 
